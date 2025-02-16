@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classy Animated Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <style>
+        body {
+            background: linear-gradient(to right, #141e30, #243b55);
+            color: white;
+        }
+        .input-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="flex justify-center items-center h-screen">
+    <div class="p-10 rounded-lg shadow-2xl input-box w-96">
+        <h1 class="text-2xl font-bold text-center mb-6">Enter Your Details</h1>
+
+        <form action="/predict" id="userForm" class="space-y-4" method="POST">
+            <div>
+                <label class="block text-sm font-semibold">Age:</label>
+                <input type="number" id="age" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400" required name="age">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold">BMI:</label>
+                <input type="number" id="bmi" step="0.1" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400" required name="bmi">
+            </div>
+            <div>
+                <label class="block text-sm font-semibold">Children:</label>
+                <input type="number" id="children" class="w-full p-2 rounded bg-gray-800 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-400" required name="children">
+            </div>
+            <button type="submit" class="w-full p-2 bg-blue-500 rounded-lg text-white font-bold hover:bg-blue-600 transition-all">Submit</button>
+        </form>
+
+        <!-- Prediction Output -->
+        {% if prediction is not none %}
+        <div class="mt-6 p-4 bg-gray-900 text-center rounded">
+            <h2 class="text-lg font-semibold">Predicted Charges:</h2>
+            <p class="text-xl font-bold text-blue-400">{{ prediction }}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <script>
+        gsap.from(".input-box", { duration: 1, opacity: 0, y: -50, ease: "power2.out" });
+    </script>
+</body>
+</html>
