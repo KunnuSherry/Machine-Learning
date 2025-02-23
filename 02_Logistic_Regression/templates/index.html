@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Data Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #ff7e5f, #feb47b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        form label {
+            display: block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+        select,
+        button,
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        button {
+            background: #ff7e5f;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        button:hover {
+            background: #feb47b;
+        }
+
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #333;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Health Data Form</h1>
+        <form id="healthForm" action="/predict" method="POST">
+            <label for="thalassemia">Thalassemia Reversible Defect:</label>
+            <select id="thalassemia" name="thalassemia">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="previousHeartAttack">Previous Heart Attack:</label>
+            <select id="previousHeartAttack" name="previousHeartAttack">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="chestPain">Chest Pain Type (Atypical):</label>
+            <select id="chestPain" name="chestPain">
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="ethnicity">Ethnicity (Hispanic):</label>
+            <select id="ethnicity" name="ethnicity">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <label for="stressLevel">Stress Level:</label>
+            <select id="stressLevel" name="stressLevel">
+                <option value="1">1</option>
+                <option value="6">6</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="2">2</option>
+                <option value="9">9</option>
+                <option value="8">8</option>
+                <option value="7">7</option>
+            </select>
+
+            <label for="medication">Medication (Yes):</label>
+            <select id="medication" name="medication">
+                <option value="1">Yes</option>
+                <option value="0">No</option>
+            </select>
+
+            <label for="cholesterol">Cholesterol:</label>
+            <input type="number" id="cholesterol" name="cholesterol" required>
+
+            <label for="gender">Gender:</label>
+            <select id="gender" name="gender">
+                <option value="1">Male</option>
+                <option value="0">Female</option>
+            </select>
+
+            <label for="alcohol">Alcohol Consumption (Out of 5):</label>
+            <select id="alcohol" name="alcohol">
+                <option value="0">0</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="1">1</option>
+                <option value="4">4</option>
+            </select>
+
+            <button type="submit">Submit</button>
+        </form>
+
+        <div id="result">{{prediction}}</div>
+    </div>
+</body>
+
+</html>
