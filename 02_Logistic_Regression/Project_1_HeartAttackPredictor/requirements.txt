@@ -1,0 +1,9 @@
+flask
+pandas
+urllib3
+matplotlib
+seaborn
+plotly
+scikit-learn
+pickle-mixin
+gunicorn
