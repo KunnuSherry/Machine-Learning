@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Prediction Form</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
+
+</head>
+<body>
+    <h2>Rain Tomorrow</h2>
+    <form action="/predict" method="POST">
+        <!-- Numeric Inputs -->
+        <label for="MinTemp">Min Temp (Celcius):</label>
+        <input type="number" name="MinTemp" step="0.1" value="0" required><br>
+        
+        <label for="MaxTemp">Max Temp (Celcius):</label>
+        <input type="number" name="MaxTemp" step="0.1" value="0" required><br>
+        
+        <label for="Rainfall">Rainfall (Millimeters):</label>
+        <input type="number" name="Rainfall" step="0.1" value="0" required><br>
+        
+        <label for="Evaporation">Evaporation (Millimeters):</label>
+        <input type="number" name="Evaporation" step="0.1" value="0" required><br>
+        
+        <label for="Sunshine">Sunshine (Hours):</label>
+        <input type="number" name="Sunshine" step="0.1" value="0" required><br>
+        
+        <label for="WindGustSpeed">Wind Gust Speed (Kilometers per hour):</label>
+        <input type="number" name="WindGustSpeed" step="0.1" value="0" required><br>
+        
+        <label for="WindSpeed9am">Wind Speed 9am (Kilometers per hour):</label>
+        <input type="number" name="WindSpeed9am" step="0.1" value="0" required><br>
+        
+        <label for="WindSpeed3pm">Wind Speed 3pm (Kilometers per hour):</label>
+        <input type="number" name="WindSpeed3pm" step="0.1" value="0" required><br>
+        
+        <label for="Humidity9am">Humidity 9am (Percentage):</label>
+        <input type="number" name="Humidity9am" step="0.1" value="0" required><br>
+        
+        <label for="Humidity3pm">Humidity 3pm (Percentage):</label>
+        <input type="number" name="Humidity3pm" step="0.1" value="0" required><br>
+        
+        <label for="Pressure9am">Pressure 9am (Hectopascal):</label>
+        <input type="number" name="Pressure9am" step="0.1" value="0" required><br>
+        
+        <label for="Pressure3pm">Pressure 3pm (Hectopascal):</label>
+        <input type="number" name="Pressure3pm" step="0.1" value="0" required><br>
+        
+        <label for="Cloud9am">Cloud 9am (Scale of 0-8):</label>
+        <input type="number" name="Cloud9am" step="0.1" value="0" required><br>
+        
+        <label for="Cloud3pm">Cloud 3pm (Scale of 0-8):</label>
+        <input type="number" name="Cloud3pm" step="0.1" value="0" required><br>
+        
+        <label for="Temp9am">Temp 9am (Celcius):</label>
+        <input type="number" name="Temp9am" step="0.1" value="0" required><br>
+        
+        <label for="Temp3pm">Temp 3pm (Celcius):</label>
+        <input type="number" name="Temp3pm" step="0.1" value="0" required><br>
+        
+        <!-- Categorical Inputs (Dropdowns) -->
+        <label for="Location">Location:</label>
+        <select name="Location" required>
+            <option value="Adelaide">Adelaide</option>
+            <option value="Albany">Albany</option>
+            <option value="Albury">Albury</option>
+            <option value="AliceSprings">Alice Springs</option>
+            <option value="BadgerysCreek">Badgerys Creek</option>
+            <option value="Ballarat">Ballarat</option>
+            <option value="Bendigo">Bendigo</option>
+            <option value="Brisbane">Brisbane</option>
+            <option value="Cairns">Cairns</option>
+            <option value="Canberra">Canberra</option>
+            <option value="Cobar">Cobar</option>
+            <option value="CoffsHarbour">Coffs Harbour</option>
+            <option value="Dartmoor">Dartmoor</option>
+            <option value="Darwin">Darwin</option>
+            <option value="GoldCoast">Gold Coast</option>
+            <option value="Hobart">Hobart</option>
+            <option value="Katherine">Katherine</option>
+            <option value="Launceston">Launceston</option>
+            <option value="Melbourne">Melbourne</option>
+            <option value="MelbourneAirport">Melbourne Airport</option>
+            <option value="Mildura">Mildura</option>
+            <option value="Moree">Moree</option>
+            <option value="MountGambier">Mount Gambier</option>
+            <option value="MountGinini">Mount Ginini</option>
+            <option value="Newcastle">Newcastle</option>
+            <option value="Nhil">Nhil</option>
+            <option value="NorahHead">Norah Head</option>
+            <option value="NorfolkIsland">Norfolk Island</option>
+            <option value="Nuriootpa">Nuriootpa</option>
+            <option value="PearceRAAF">Pearce RAAF</option>
+            <option value="Penrith">Penrith</option>
+            <option value="Perth">Perth</option>
+            <option value="PerthAirport">Perth Airport</option>
+            <option value="Portland">Portland</option>
+            <option value="Richmond">Richmond</option>
+            <option value="Sale">Sale</option>
+            <option value="SalmonGums">Salmon Gums</option>
+            <option value="Sydney">Sydney</option>
+            <option value="SydneyAirport">Sydney Airport</option>
+            <option value="Townsville">Townsville</option>
+            <option value="Tuggeranong">Tuggeranong</option>
+            <option value="Uluru">Uluru</option>
+            <option value="WaggaWagga">Wagga Wagga</option>
+            <option value="Walpole">Walpole</option>
+            <option value="Watsonia">Watsonia</option>
+            <option value="Williamtown">Williamtown</option>
+            <option value="Witchcliffe">Witchcliffe</option>
+            <option value="Wollongong">Wollongong</option>
+            <option value="Woomera">Woomera</option>
+        </select><br>
+        
+        <label for="WindGustDir">Wind Gust Direction:</label>
+        <select name="WindGustDir" required>
+            <option value="E">E</option>
+            <option value="ENE">ENE</option>
+            <option value="ESE">ESE</option>
+            <option value="N">N</option>
+            <option value="NE">NE</option>
+            <option value="NNE">NNE</option>
+            <option value="NNW">NNW</option>
+            <option value="NW">NW</option>
+            <option value="S">S</option>
+            <option value="SE">SE</option>
+            <option value="SSE">SSE</option>
+            <option value="SSW">SSW</option>
+            <option value="SW">SW</option>
+            <option value="W">W</option>
+            <option value="WNW">WNW</option>
+            <option value="WSW">WSW</option>
+        </select><br>
+
+        <label for="WindDir9am">Wind Direction at 9 AM:</label>
+        <select name="WindDir9am" required>
+            <option value="E">E</option>
+            <option value="ENE">ENE</option>
+            <option value="ESE">ESE</option>
+            <option value="N">N</option>
+            <option value="NE">NE</option>
+            <option value="NNE">NNE</option>
+            <option value="NNW">NNW</option>
+            <option value="NW">NW</option>
+            <option value="S">S</option>
+            <option value="SE">SE</option>
+            <option value="SSE">SSE</option>
+            <option value="SSW">SSW</option>
+            <option value="SW">SW</option>
+            <option value="W">W</option>
+            <option value="WNW">WNW</option>
+            <option value="WSW">WSW</option>
+        </select><br>
+
+        <label for="WindDir3pm">Wind Direction at 3 PM:</label>
+        <select name="WindDir3pm" required>
+            <option value="E">E</option>
+            <option value="ENE">ENE</option>
+            <option value="ESE">ESE</option>
+            <option value="N">N</option>
+            <option value="NE">NE</option>
+            <option value="NNE">NNE</option>
+            <option value="NNW">NNW</option>
+            <option value="NW">NW</option>
+            <option value="S">S</option>
+            <option value="SE">SE</option>
+            <option value="SSE">SSE</option>
+            <option value="SSW">SSW</option>
+            <option value="SW">SW</option>
+            <option value="W">W</option>
+            <option value="WNW">WNW</option>
+            <option value="WSW">WSW</option>
+        </select><br>
+
+        <label for="rainToday">Whether it rained today:</label>
+        <select name="rainToday">
+            <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+        
+        <button type="submit">Predict</button>
+        <h2>Prediction: {{ prediction }}</h2>
+    </form>
+</body>
+</html>
