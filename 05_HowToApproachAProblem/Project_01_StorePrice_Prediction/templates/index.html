@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Store Turnover Forecast</title>
+  <style>
+    /* Base styles */
+    :root {
+      --ghibli-dark: #1A1F2C;
+      --ghibli-purple: #E5DEFF;
+      --ghibli-accent: #8E9196;
+      --ghibli-soft: #F1F0FB;
+      --ghibli-midnight: #221F26;
+      --ghibli-forest: #1B3A27;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: var(--ghibli-midnight);
+      color: white;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* Animation keyframes */
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-10px);
+      }
+    }
+
+    @keyframes float-reverse {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(10px);
+      }
+    }
+
+    @keyframes twinkle {
+
+      0%,
+      100% {
+        opacity: 1;
+      }
+
+      50% {
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes fade-in-up {
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes pulse-gentle {
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.8;
+        transform: scale(1.05);
+      }
+    }
+
+    /* Utility classes */
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 2rem 1rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+
+    .mb-12 {
+      margin-bottom: 3rem;
+    }
+
+    .mb-6 {
+      margin-bottom: 1.5rem;
+    }
+
+    .mb-4 {
+      margin-bottom: 1rem;
+    }
+
+    .mb-2 {
+      margin-bottom: 0.5rem;
+    }
+
+    .mt-8 {
+      margin-top: 2rem;
+    }
+
+    .mt-16 {
+      margin-top: 4rem;
+    }
+
+    .text-gradient {
+      background: linear-gradient(to bottom right, white, rgba(255, 255, 255, 0.7));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+
+    .glass-morphism {
+      backdrop-filter: blur(12px);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      box-shadow: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+      border-radius: 0.75rem;
+    }
+
+    .neo-blur {
+      backdrop-filter: blur(20px);
+      background-color: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 0.75rem;
+    }
+
+    .animate-fade-in-up {
+      animation: fade-in-up 0.6s ease-out forwards;
+    }
+
+    .animate-float {
+      animation: float 6s ease-in-out infinite;
+    }
+
+    .animate-float-reverse {
+      animation: float-reverse 7s ease-in-out infinite;
+    }
+
+    .animate-pulse-gentle {
+      animation: pulse-gentle 3s ease-in-out infinite;
+    }
+
+    /* Background elements */
+    .starry-background {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: 0;
+    }
+
+    .star {
+      position: absolute;
+      border-radius: 50%;
+      background-color: white;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.8), 0 0 20px rgba(255, 255, 255, 0.4);
+    }
+
+    .form-background {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+    }
+
+    .bg-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(40px);
+    }
+
+    .bg-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom right, rgba(26, 31, 44, 0.7), rgba(34, 31, 38, 1));
+      opacity: 0.8;
+    }
+
+    /* Form elements */
+    .form-section {
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      animation-fill-mode: both;
+    }
+
+    .form-grid {
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--ghibli-purple);
+      margin-bottom: 0.25rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.5rem 1rem;
+      background-color: rgba(34, 31, 38, 0.8);
+      border: 1px solid rgba(229, 222, 255, 0.3);
+      border-radius: 0.375rem;
+      color: white;
+      backdrop-filter: blur(4px);
+      transition: all 0.3s;
+    }
+
+    .form-input:focus {
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(229, 222, 255, 0.5);
+    }
+
+    .form-select {
+      -webkit-appearance: none;
+      appearance: none;
+      background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%23e5deff' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+      background-position: right 0.5rem center;
+      background-repeat: no-repeat;
+      background-size: 1.5em 1.5em;
+      padding-right: 2.5rem;
+      cursor: pointer;
+    }
+
+    .form-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      padding: 0.75rem 2rem;
+      background-color: rgba(229, 222, 255, 0.2);
+      color: white;
+      border: 1px solid rgba(229, 222, 255, 0.5);
+      border-radius: 9999px;
+      backdrop-filter: blur(4px);
+      box-shadow: 0 0 15px rgba(229, 222, 255, 0.2);
+      transition: all 0.3s;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .form-button:hover {
+      background-color: rgba(229, 222, 255, 0.3);
+    }
+
+    .form-button:active {
+      transform: translateY(1px);
+    }
+
+    .form-button:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--ghibli-accent);
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .input-with-icon input {
+      padding-left: 2.5rem;
+    }
+
+    /* Results section */
+    .prediction-result {
+      padding: 1.5rem;
+      margin-top: 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .result-gradient {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom right, rgba(229, 222, 255, 0.3), transparent);
+      opacity: 0.1;
+      pointer-events: none;
+    }
+
+    .spinner {
+      width: 3rem;
+      height: 3rem;
+      border: 4px solid transparent;
+      border-top-color: var(--ghibli-purple);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .result-value {
+      font-size: 2.25rem;
+      font-weight: 700;
+      color: var(--ghibli-purple);
+      margin-bottom: 0.5rem;
+    }
+
+    /* Media queries */
+    @media (min-width: 768px) {
+      .form-grid-2 {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .form-grid-4 {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      .form-grid-3-1 {
+        grid-template-columns: 3fr 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Background elements -->
+  <div class="starry-background" id="starry-background"></div>
+  <div class="form-background">
+    <div class="bg-blob animate-float"
+      style="top: 10%; right: 15%; width: 8rem; height: 8rem; background-color: rgba(229, 222, 255, 0.1);"></div>
+    <div class="bg-blob animate-float-reverse"
+      style="bottom: 20%; left: 15%; width: 10rem; height: 10rem; background-color: rgba(229, 222, 255, 0.05);"></div>
+    <div class="bg-blob animate-float"
+      style="top: 40%; left: 20%; width: 6rem; height: 6rem; background-color: rgba(229, 222, 255, 0.1);"></div>
+    <div class="bg-blob animate-float-reverse"
+      style="bottom: 35%; right: 20%; width: 9rem; height: 9rem; background-color: rgba(173, 216, 230, 0.05);"></div>
+    <div class="bg-gradient"></div>
+  </div>
+
+  <!-- Main content -->
+  <div class="container">
+    <header class="text-center mb-12 animate-fade-in-up">
+      <h1 class="text-gradient" style="font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem;">
+        Store Turnover Prediction
+      </h1>
+      <p style="color: var(--ghibli-accent); max-width: 32rem; margin: 0 auto;">
+        Enter your store details below to get a magical prediction of your daily turnover.
+        Our spirits will analyze your data and reveal what the future holds.
+      </p>
+      
+    </header>
+
+    <form id="prediction-form" action="/predict" method="POST">
+      <!-- Store Information -->
+      <div class="form-section glass-morphism animate-fade-in-up" style="animation-delay: 100ms;">
+        <h2 class="text-gradient mb-4" style="font-size: 1.25rem; font-weight: 600;">Store Information</h2>
+        <div class="form-grid form-grid-2">
+          <div>
+            <label for="store" class="form-label">
+              Store ID <span style="color: #ea384c;">*</span>
+            </label>
+            <div class="input-with-icon">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              <input id="store" name="store" type="number" placeholder="Enter store ID" class="form-input" name=""
+                required>
+            </div>
+          </div>
+
+          <div class="form-grid form-grid-3-1">
+            <div>
+              <label for="storeType" class="form-label">Store Type</label>
+              <select id="storeType" name="storeType" class="form-input form-select">
+                <option value="a">Type A</option>
+                <option value="b">Type B</option>
+                <option value="c">Type C</option>
+                <option value="d">Type D</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="assortment" class="form-label">Assortment</label>
+              <select id="assortment" name="assortment" class="form-input form-select">
+                <option value="a">Basic</option>
+                <option value="b">Extra</option>
+                <option value="c">Extended</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Date Information -->
+      <div class="form-section glass-morphism animate-fade-in-up" style="animation-delay: 200ms;">
+        <h2 class="text-gradient mb-4" style="font-size: 1.25rem; font-weight: 600;">Date Information</h2>
+        <div class="form-grid form-grid-4">
+          <div>
+            <label for="day" class="form-label">
+              Day <span style="color: #ea384c;">*</span>
+            </label>
+            <div class="input-with-icon">
+              <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="16" y1="2" x2="16" y2="6"></line>
+                <line x1="8" y1="2" x2="8" y2="6"></line>
+                <line x1="3" y1="10" x2="21" y2="10"></line>
+              </svg>
+              <input id="day" name="day" type="number" min="1" max="31" placeholder="Day" class="form-input" required>
+            </div>
+          </div>
+
+          <div>
+            <label for="month" class="form-label">
+              Month <span style="color: #ea384c;">*</span>
+            </label>
+            <input id="month" name="month" type="number" min="1" max="12" placeholder="Month" class="form-input"
+              required>
+          </div>
+
+          <div>
+            <label for="year" class="form-label">
+              Year <span style="color: #ea384c;">*</span>
+            </label>
+            <input id="year" name="year" type="number" min="2000" max="2030" placeholder="Year" class="form-input"
+              required>
+          </div>
+
+          <div>
+            <label for="dayOfWeek" class="form-label">Day of Week</label>
+            <select id="dayOfWeek" name="dayOfWeek" class="form-input form-select">
+              <option value="1">Monday</option>
+              <option value="2">Tuesday</option>
+              <option value="3">Wednesday</option>
+              <option value="4">Thursday</option>
+              <option value="5">Friday</option>
+              <option value="6">Saturday</option>
+              <option value="7">Sunday</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <!-- Promotion & Holiday Information -->
+      <div class="form-section glass-morphism animate-fade-in-up" style="animation-delay: 300ms;">
+        <h2 class="text-gradient mb-4" style="font-size: 1.25rem; font-weight: 600;">Promotion & Holiday Information
+        </h2>
+        <div class="form-grid form-grid-2">
+          <div>
+            <label for="promo" class="form-label">Promotion</label>
+            <select id="promo" name="promo" class="form-input form-select">
+              <option value="0">No Promotion</option>
+              <option value="1">Running Promotion</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="stateHoliday" class="form-label">State Holiday</label>
+            <select id="stateHoliday" name="stateHoliday" class="form-input form-select">
+              <option value="0">No Holiday</option>
+              <option value="a">Public Holiday</option>
+              <option value="b">Easter Holiday</option>
+              <option value="c">Christmas</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-8 text-center">
+        <button type="submit" id="predict-button" class="form-button">
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"
+            style="margin-right: 0.5rem;">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          Predict Turnover
+        </button>
+      </div>
+    </form>
+
+    <!-- Prediction Result -->
+    <div class="prediction-result neo-blur animate-fade-in-up mt-8" {% if prediction is defined and prediction !=-1
+      %}style="display: block;" {% else %}style="display: none;" {% endif %}>
+      <div class="result-gradient"></div>
+      <div style="position: relative; z-index: 1;">
+        <h3 class="text-gradient mb-4" style="font-size: 1.5rem; font-weight: 600; text-align: center;">
+          Predicted Store Turnover
+        </h3>
+
+        <div id="result-display" class="animate-pulse-gentle">
+          <div class="result-value">€{{ prediction if prediction is defined and prediction != -1 else '0' }}</div>
+          <p style="color: var(--ghibli-accent); text-align: center;">
+            Estimated daily sales for your store
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <footer class="text-center mt-16"
+      style="color: rgba(142, 145, 150, 0.6); font-size: 0.875rem; animation: fade-in-up 0.6s ease-out forwards; animation-delay: 600ms;">
+      <p>Inspired by the enchanting worlds of Studio Ghibli</p>
+    </footer>
+  </div>
+
+  <script>
+    // Add stars to the background
+    function createStars() {
+      const starryBg = document.getElementById('starry-background');
+      const starsCount = 100;
+
+      for (let i = 0; i < starsCount; i++) {
+        const star = document.createElement('div');
+        star.classList.add('star');
+
+        // Random position
+        const x = Math.random() * 100;
+        const y = Math.random() * 100;
+
+        // Random size
+        const size = Math.random() * 3;
+
+        // Random twinkle animation
+        const delay = Math.random() * 5;
+
+        star.style.left = `${x}%`;
+        star.style.top = `${y}%`;
+        star.style.width = `${size}px`;
+        star.style.height = `${size}px`;
+        star.style.animation = `twinkle ${2 + Math.random() * 3}s ease-in-out infinite`;
+        star.style.animationDelay = `${delay}s`;
+
+        starryBg.appendChild(star);
+      }
+    }
+
+    // Handle form submission
+
+
+    // Simple toast notification
+    function showToast(title, message) {
+      const toast = document.createElement('div');
+      toast.className = 'glass-morphism animate-fade-in-up';
+      toast.style.position = 'fixed';
+      toast.style.bottom = '20px';
+      toast.style.right = '20px';
+      toast.style.padding = '1rem';
+      toast.style.maxWidth = '300px';
+      toast.style.zIndex = '9999';
+
+      toast.innerHTML = `
+        <h4 style="font-size: 0.875rem; font-weight: 600; margin-bottom: 0.25rem;">${title}</h4>
+        <p style="font-size: 0.75rem; opacity: 0.9;">${message}</p>
+      `;
+
+      document.body.appendChild(toast);
+
+      // Remove after 4 seconds
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease-out';
+
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 4000);
+    }
+
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      createStars();
+      document.getElementById('prediction-form').addEventListener('submit', handleFormSubmit);
+    });
+  </script>
+</body>
+
+</html>
